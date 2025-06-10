@@ -1,0 +1,13 @@
+# Ficheiros de log e de dependências
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Pastas de produção
+build/
+dist/
+
+# Ficheiros do sistema operativo
+.DS_Store
+Thumbs.db
