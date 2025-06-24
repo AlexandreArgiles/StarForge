@@ -1,17 +1,14 @@
-// O script de pré-carregamento (preload) corre num contexto privilegiado que tem
-// acesso tanto ao Node.js do Electron como às APIs do navegador.
-// No entanto, por razões de segurança, não devemos expor APIs do Node.js diretamente
-// ao código da sua página web (o processo de renderização).
-
-// Em vez disso, usamos a `contextBridge` para expor APIs controladas e seguras.
-const { contextBridge } = require('electron');
-
-// Por enquanto, não precisamos de expor nenhuma funcionalidade do sistema operativo
-// para a nossa aplicação React, por isso, esta ponte está vazia.
-// No futuro, se quiséssemos, por exemplo, ler um ficheiro do sistema,
-// adicionaríamos a função aqui.
+const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  // Exemplo:
-  // loadCampaign: () => ipcRenderer.invoke('dialog:openFile'),
+  // NOVO: Adicionamos a função para fazer backup de uma campanha
+  backupCampaign: (campaignData) => ipcRenderer.invoke('backup-campaign', campaignData),
+
+  // (Funções existentes permanecem aqui)
+  importCampaign: () => ipcRenderer.invoke('import-campaign'),
+  getCampaigns: () => ipcRenderer.invoke('get-campaigns'),
+  saveCampaign: (campaignData) => ipcRenderer.invoke('save-campaign', campaignData),
+  deleteCampaign: (campaignId) => ipcRenderer.invoke('delete-campaign', campaignId),
+  openCampaignsFolder: () => ipcRenderer.invoke('open-campaigns-folder'),
+  callGemini: (prompt) => ipcRenderer.invoke('gemini-api-call', prompt)
 });
