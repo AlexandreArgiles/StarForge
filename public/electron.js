@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
-const url = require('url');
+const url = require('url'); // Importar o módulo 'url'
 
 // Função para criar a janela principal da aplicação
 async function createWindow() {
@@ -12,7 +12,6 @@ async function createWindow() {
     width: 1200,
     height: 800,
     webPreferences: {
-      // O preload agora é carregado a partir da raiz do projeto
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
@@ -25,8 +24,9 @@ async function createWindow() {
   const startUrl = isDev
     ? 'http://localhost:3000'
     : url.format({
-        // CORREÇÃO: O caminho agora parte da raiz do projeto para a pasta 'build'.
-        pathname: path.join(__dirname, 'build/index.html'),
+        // CORREÇÃO: Este caminho sai da pasta 'public' (onde o electron.js está)
+        // e entra na pasta 'build' para encontrar o index.html
+        pathname: path.join(__dirname, '../build/index.html'),
         protocol: 'file:',
         slashes: true,
       });

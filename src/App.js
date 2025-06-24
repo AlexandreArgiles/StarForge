@@ -89,14 +89,14 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
     if (!isOpen) return null;
     const sizeClasses = { sm: 'max-w-sm', md: 'max-w-md', lg: 'max-w-lg', xl: 'max-w-xl', '2xl': 'max-w-2xl', '4xl': 'max-w-4xl' };
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50" onClick={onClose}>
+        <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 transition-opacity duration-300" onClick={onClose}>
             <div 
-                className={`bg-gray-800 p-6 rounded-lg shadow-xl w-full ${sizeClasses[size]} max-h-[90vh] overflow-y-auto transform transition-all duration-300 ease-in-out`}
+                className={`bg-slate-800 border border-slate-700 p-6 rounded-lg shadow-2xl shadow-cyan-500/10 w-full ${sizeClasses[size]} max-h-[90vh] overflow-y-auto transform transition-all duration-300 ease-in-out`}
                 onClick={(e) => e.stopPropagation()}
             >
-                <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-semibold text-purple-400">{title}</h2>
-                    <button onClick={onClose} className="text-gray-400 hover:text-white text-3xl leading-none p-1 rounded-full hover:bg-gray-700 transition-colors">&times;</button>
+                <div className="flex justify-between items-center mb-4 pb-2 border-b border-slate-700">
+                    <h2 className="text-2xl font-bold text-cyan-400 font-orbitron">{title}</h2>
+                    <button onClick={onClose} className="text-slate-400 hover:text-white text-3xl leading-none p-1 rounded-full hover:bg-slate-700 transition-colors">&times;</button>
                 </div>
                 {children}
             </div>
@@ -107,12 +107,12 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
 const Notification = ({ message, type, onClose }) => {
     if (!message) return null;
     const typeClasses = {
-        error: 'bg-red-600', success: 'bg-green-600',
-        info: 'bg-blue-600', warning: 'bg-yellow-500 text-black'
+        error: 'from-red-500 to-red-600', success: 'from-green-500 to-green-600',
+        info: 'from-sky-500 to-sky-600', warning: 'from-yellow-400 to-yellow-500 text-slate-900'
     };
     return (
-        <div className={`fixed top-5 right-5 ${typeClasses[type] || typeClasses.info} text-white p-4 rounded-lg shadow-2xl z-[100] flex items-center space-x-3 transition-all duration-300 ease-in-out`}>
-            <span>{message}</span>
+        <div className={`fixed top-5 right-5 bg-gradient-to-br ${typeClasses[type] || typeClasses.info} text-white p-4 rounded-lg shadow-2xl shadow-black/50 z-[100] flex items-center space-x-3 transition-all duration-300 ease-in-out`}>
+            <span className="font-semibold">{message}</span>
             <button onClick={onClose} className="ml-auto font-bold text-lg leading-none p-1 rounded-full hover:bg-black/20 transition-colors">&times;</button>
         </div>
     );
@@ -122,9 +122,9 @@ const ConfirmModal = ({ isOpen, onClose, title, message, onConfirm, confirmText 
     if (!isOpen) return null;
     return (
         <Modal isOpen={isOpen} onClose={onClose} title={title} size="sm">
-            <p className="text-gray-300 mb-6">{message}</p>
+            <p className="text-slate-300 mb-6">{message}</p>
             <div className="flex justify-end space-x-3">
-                <button onClick={onClose} className="py-2 px-4 bg-gray-600 hover:bg-gray-500 rounded-md text-white transition-colors">{cancelText}</button>
+                <button onClick={onClose} className="py-2 px-4 bg-slate-600 hover:bg-slate-500 rounded-md text-white transition-colors">Cancelar</button>
                 <button onClick={() => { onConfirm(); onClose(); }} className="py-2 px-4 bg-red-600 hover:bg-red-700 rounded-md text-white transition-colors">{confirmText}</button>
             </div>
         </Modal>
@@ -143,23 +143,23 @@ const ViewDetailModal = ({ isOpen, onClose, itemData, isLoading }) => {
 
     const renderContent = () => {
         if(isLoading) {
-            return <div className="flex justify-center items-center h-40"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-purple-500"></div><p className="ml-3 text-gray-400">A traduzir...</p></div>
+            return <div className="flex justify-center items-center h-40"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-cyan-500"></div><p className="ml-3 text-slate-400">A traduzir...</p></div>
         }
 
         switch (itemData.type) {
             case 'image':
                 return (
                     <>
-                        {item.imageUrl && <img src={item.imageUrl} alt={item.name} className="w-full h-auto max-h-80 object-contain rounded mb-4 bg-gray-900/50" />}
-                        <p className="text-gray-300 whitespace-pre-line">{item.description}</p>
+                        {item.imageUrl && <img src={item.imageUrl} alt={item.name} className="w-full h-auto max-h-80 object-contain rounded mb-4 bg-slate-900/50" />}
+                        <p className="text-slate-300 whitespace-pre-line">{item.description}</p>
                     </>
                 );
             case 'npc':
                 return (
                     <>
-                        {item.imageUrl && <img src={item.imageUrl} alt={item.name} className="w-full h-auto max-h-80 object-contain rounded mb-4 bg-gray-900/50" />}
-                        <p className="text-gray-300 whitespace-pre-line">{item.description}</p>
-                        {item.keywords && <p className="text-xs text-gray-500 mt-2">Palavras-chave: {item.keywords}</p>}
+                        {item.imageUrl && <img src={item.imageUrl} alt={item.name} className="w-full h-auto max-h-80 object-contain rounded mb-4 bg-slate-900/50" />}
+                        <p className="text-slate-300 whitespace-pre-line">{item.description}</p>
+                        {item.keywords && <p className="text-xs text-slate-500 mt-2">Palavras-chave: {item.keywords}</p>}
                     </>
                 );
             case 'bestiary':
@@ -167,25 +167,25 @@ const ViewDetailModal = ({ isOpen, onClose, itemData, isLoading }) => {
                 if (item.source === 'srd' && item.fullData) {
                     const data = item.fullData;
                     return (
-                        <div className="space-y-2 text-sm text-gray-300">
+                        <div className="space-y-2 text-sm text-slate-300">
                             <p>{data.size} {data.type}, {data.alignment}</p>
                             <p><strong>Classe de Armadura:</strong> {data.armor_class?.map(ac => `${ac.value} (${ac.type})`).join(', ') || 'N/A'}</p>
                             <p><strong>Pontos de Vida:</strong> {data.hit_points} ({data.hit_dice})</p>
                             <p><strong>Deslocamento:</strong> {formatDistance(data.speed)}</p>
-                            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 text-center my-2 pt-2 border-t border-gray-600">
+                            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 text-center my-2 pt-2 border-t border-slate-700">
                                 {Object.keys(attributeTranslations).map(attr => (
                                      <div key={attr}><p className="font-bold uppercase">{attributeTranslations[attr]}</p><p>{data[attr]} ({(Math.floor((data[attr] - 10) / 2)) >= 0 ? '+' : ''}{Math.floor((data[attr] - 10) / 2)})</p></div>
                                 ))}
                             </div>
-                            {data.special_abilities?.length > 0 && <div className="pt-2 border-t border-gray-600"><strong>Habilidades Especiais:</strong> {data.special_abilities.map(a => <div key={a.name} className="mt-1"><p className="font-semibold">{a.name}:</p><p>{a.desc}</p></div>)}</div>}
-                            {data.actions?.length > 0 && <div className="pt-2 border-t border-gray-600"><strong>Ações:</strong> {data.actions.map(a => <div key={a.name} className="mt-1"><p className="font-semibold">{a.name}:</p><p>{a.desc}</p></div>)}</div>}
-                            {data.legendary_actions?.length > 0 && <div className="pt-2 border-t border-gray-600"><strong>Ações Lendárias:</strong> {data.legendary_actions.map(a => <div key={a.name} className="mt-1"><p className="font-semibold">{a.name}:</p><p>{a.desc}</p></div>)}</div>}
+                            {data.special_abilities?.length > 0 && <div className="pt-2 border-t border-slate-700"><strong>Habilidades Especiais:</strong> {data.special_abilities.map(a => <div key={a.name} className="mt-1"><p className="font-semibold">{a.name}:</p><p>{a.desc}</p></div>)}</div>}
+                            {data.actions?.length > 0 && <div className="pt-2 border-t border-slate-700"><strong>Ações:</strong> {data.actions.map(a => <div key={a.name} className="mt-1"><p className="font-semibold">{a.name}:</p><p>{a.desc}</p></div>)}</div>}
+                            {data.legendary_actions?.length > 0 && <div className="pt-2 border-t border-slate-700"><strong>Ações Lendárias:</strong> {data.legendary_actions.map(a => <div key={a.name} className="mt-1"><p className="font-semibold">{a.name}:</p><p>{a.desc}</p></div>)}</div>}
                         </div>
                     );
                 }
                 // Se for gerado por IA ou manual
                 return (
-                     <div className="space-y-2 text-sm text-gray-300">
+                     <div className="space-y-2 text-sm text-slate-300">
                         <p className="whitespace-pre-line">{item.description}</p>
                         <p className="font-semibold mt-2">Atributos:</p>
                         <p className="whitespace-pre-line">{item.stats}</p>
@@ -251,17 +251,17 @@ const ImportMonsterModal = ({ isOpen, onClose, onImport, showNotification }) => 
                     placeholder="Pesquisar monstro..."
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)}
-                    className="w-full p-2 bg-gray-700 rounded border border-gray-600"
+                    className="w-full p-2 bg-slate-700 rounded border border-slate-600"
                 />
                 {isLoading ? (
-                    <p className="text-gray-400">Carregando monstros...</p>
+                    <p className="text-slate-400">Carregando monstros...</p>
                 ) : (
                     <div className="max-h-80 overflow-y-auto pr-2">
                         {filteredMonsters.map(monster => (
                             <button
                                 key={monster.index}
                                 onClick={() => onImport(monster.url)}
-                                className="block w-full text-left p-2 rounded hover:bg-gray-700 transition-colors"
+                                className="block w-full text-left p-2 rounded hover:bg-slate-700 transition-colors"
                             >
                                 {monster.name}
                             </button>
@@ -378,26 +378,26 @@ const MasterDashboard = ({ campaignsData, setCampaignsData, showNotification }) 
     return (
         <div className="p-4 md:p-6">
             <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-                <h2 className="text-3xl font-semibold text-purple-400">Minhas Campanhas Locais</h2>
+                <h2 className="text-3xl font-bold text-cyan-400 font-orbitron">Minhas Campanhas</h2>
                 <button onClick={() => { setShowCreateModal(true); setAiCampaignIdeas([]); setCampaignTheme(''); setNewCampaignName(''); setNewCampaignDesc(''); }} 
-                    className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition duration-150 shadow-md hover:shadow-lg w-full sm:w-auto">
+                    className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-lg transition duration-150 shadow-md hover:shadow-lg shadow-cyan-500/20 w-full sm:w-auto">
                     + Nova Campanha
                 </button>
             </div>
 
-            {loadingAction && <div className="text-center py-5"><div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500 mx-auto"></div></div>}
+            {loadingAction && <div className="text-center py-5"><div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-cyan-500 mx-auto"></div></div>}
             
             {!loadingAction && campaignsData.campaigns.length === 0 && (
-                <div className="text-center py-10 bg-gray-800 rounded-lg shadow-inner"><svg className="mx-auto h-12 w-12 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path vectorEffect="non-scaling-stroke" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" /></svg><h3 className="mt-2 text-xl font-medium text-gray-300">Nenhuma campanha criada</h3><p className="mt-1 text-sm text-gray-500">Crie sua primeira aventura!</p></div>
+                <div className="text-center py-10 bg-slate-800/50 border border-slate-700 rounded-lg shadow-inner"><svg className="mx-auto h-12 w-12 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path vectorEffect="non-scaling-stroke" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" /></svg><h3 className="mt-2 text-xl font-medium text-slate-300">Nenhuma campanha criada</h3><p className="mt-1 text-sm text-slate-500">Crie sua primeira aventura!</p></div>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {campaignsData.campaigns.map(campaign => (
-                    <div key={campaign.id} className="bg-gray-800 p-6 rounded-lg shadow-xl hover:shadow-purple-500/50 transition-all duration-300 transform hover:scale-105">
-                        <h3 className="text-xl font-semibold text-purple-300 mb-2 truncate">{campaign.name}</h3>
-                        <p className="text-gray-400 text-sm mb-4 h-20 overflow-hidden line-clamp-3">{campaign.description || "Sem descrição."}</p>
-                        <div className="flex flex-col sm:flex-row justify-between items-center gap-2 pt-2 border-t border-gray-700">
-                           <button onClick={() => setSelectedCampaign(campaign)} className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm transition duration-150 shadow-md">Gerenciar</button>
+                    <div key={campaign.id} className="bg-slate-800 p-6 rounded-lg shadow-xl border border-slate-700/50 hover:border-cyan-500/50 hover:shadow-cyan-500/10 transition-all duration-300 transform hover:-translate-y-1">
+                        <h3 className="text-xl font-orbitron font-semibold text-cyan-300 mb-2 truncate">{campaign.name}</h3>
+                        <p className="text-slate-400 text-sm mb-4 h-20 overflow-hidden line-clamp-3">{campaign.description || "Sem descrição."}</p>
+                        <div className="flex flex-col sm:flex-row justify-between items-center gap-2 pt-4 border-t border-slate-700">
+                           <button onClick={() => setSelectedCampaign(campaign)} className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md text-sm transition duration-150 shadow-md">Gerenciar</button>
                            <button onClick={() => requestDeleteCampaign(campaign.id)} className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white py-2 px-3 rounded-md text-sm transition duration-150 shadow-md">Excluir</button>
                         </div>
                     </div>
@@ -406,16 +406,16 @@ const MasterDashboard = ({ campaignsData, setCampaignsData, showNotification }) 
 
             <Modal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} title="Criar Nova Campanha" size="lg">
                 <form onSubmit={handleCreateCampaign} className="space-y-4">
-                    <div><label className="block text-sm font-medium text-gray-300">Nome da Campanha</label><input type="text" value={newCampaignName} onChange={(e) => setNewCampaignName(e.target.value)} className="w-full p-3 bg-gray-700 rounded-md border border-gray-600" required /></div>
-                    <div><label className="block text-sm font-medium text-gray-300">Descrição</label><textarea value={newCampaignDesc} onChange={(e) => setNewCampaignDesc(e.target.value)} rows="3" className="w-full p-3 bg-gray-700 rounded-md border border-gray-600" /></div>
-                    <div className="pt-2 border-t border-gray-700 space-y-3">
-                        <h4 className="text-md font-semibold text-purple-400">✨ Assistente com IA</h4>
-                        <div><label className="block text-sm font-medium text-gray-300">Tema/Gênero para Ideias</label><input type="text" value={campaignTheme} onChange={(e) => setCampaignTheme(e.target.value)} className="w-full p-3 bg-gray-700 rounded-md border border-gray-600" placeholder="Ex: Fantasia medieval, Ficção científica" /></div>
+                    <div><label className="block text-sm font-medium text-slate-300">Nome da Campanha</label><input type="text" value={newCampaignName} onChange={(e) => setNewCampaignName(e.target.value)} className="w-full p-3 bg-slate-700 rounded-md border border-slate-600" required /></div>
+                    <div><label className="block text-sm font-medium text-slate-300">Descrição</label><textarea value={newCampaignDesc} onChange={(e) => setNewCampaignDesc(e.target.value)} rows="3" className="w-full p-3 bg-slate-700 rounded-md border border-slate-600" /></div>
+                    <div className="pt-2 border-t border-slate-700 space-y-3">
+                        <h4 className="text-md font-semibold text-cyan-400 font-orbitron">✨ Assistente com IA</h4>
+                        <div><label className="block text-sm font-medium text-slate-300">Tema/Gênero para Ideias</label><input type="text" value={campaignTheme} onChange={(e) => setCampaignTheme(e.target.value)} className="w-full p-3 bg-slate-700 rounded-md border border-slate-600" placeholder="Ex: Fantasia medieval, Ficção científica" /></div>
                         <button type="button" onClick={handleGenerateCampaignIdeas} disabled={generatingIdeas || !campaignTheme.trim()} className="w-full p-3 bg-teal-600 hover:bg-teal-700 rounded-md font-semibold transition duration-150 disabled:opacity-50 flex items-center justify-center gap-2">
                             {generatingIdeas ? <><svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25"></circle><path d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" fill="currentColor" className="opacity-75"></path></svg>Gerando...</> : "✨ Gerar Ideias com IA"}
                         </button>
                         {aiCampaignIdeas.length > 0 && (
-                            <div className="mt-4 space-y-3 bg-gray-700/50 p-3 rounded-md max-h-48 overflow-y-auto">{aiCampaignIdeas.map((idea, index) => (<div key={index} className="p-2 border border-gray-600 rounded-md hover:bg-gray-600/50"><p className="font-medium text-purple-300">{idea.name}</p><p className="text-xs text-gray-400">{idea.description}</p><button type="button" onClick={() => { setNewCampaignName(idea.name); setNewCampaignDesc(idea.description); }} className="mt-1 text-xs text-teal-400 hover:text-teal-300">Usar</button></div>))}</div>
+                            <div className="mt-4 space-y-3 bg-slate-700/50 p-3 rounded-md max-h-48 overflow-y-auto">{aiCampaignIdeas.map((idea, index) => (<div key={index} className="p-2 border border-slate-600 rounded-md hover:bg-slate-600/50"><p className="font-medium text-cyan-300">{idea.name}</p><p className="text-xs text-slate-400">{idea.description}</p><button type="button" onClick={() => { setNewCampaignName(idea.name); setNewCampaignDesc(idea.description); }} className="mt-1 text-xs text-teal-400 hover:text-teal-300">Usar</button></div>))}</div>
                         )}
                     </div>
                     <button type="submit" disabled={loadingAction} className="w-full p-3 bg-green-500 hover:bg-green-600 rounded-md font-semibold disabled:opacity-60">{loadingAction ? 'Criando...' : 'Criar Campanha'}</button>
@@ -471,7 +471,6 @@ const ManageLocalCampaign = ({ campaign: initialCampaign, updateCampaignInList, 
     const [gmNoteContent, setGmNoteContent] = useState('');
     const [editingGmNote, setEditingGmNote] = useState(null);
     
-    // Campos para "Ficha de Personagem"
     const [showCharacterSheetModal, setShowCharacterSheetModal] = useState(false);
     const [csPlayerName, setCsPlayerName] = useState(''); 
     const [csCharacterName, setCsCharacterName] = useState('');
@@ -716,6 +715,7 @@ const ManageLocalCampaign = ({ campaign: initialCampaign, updateCampaignInList, 
             case 'material': fieldName = 'materials'; updatedItemsArray = campaign.materials.filter(item => item.id !== id); break;
             case 'gmNote': fieldName = 'gmNotes'; updatedItemsArray = campaign.gmNotes.filter(item => item.id !== id); break;
             case 'characterSheet': fieldName = 'characterSheetsData'; updatedItemsArray = campaign.characterSheetsData.filter(item => item.id !== id); break;
+            case 'event': fieldName = 'events'; updatedItemsArray = campaign.events.filter(item => item.id !== id); break;
             default: showNotification("Tipo de item inválido para exclusão.", "error"); return;
         }
         
@@ -764,16 +764,16 @@ const ManageLocalCampaign = ({ campaign: initialCampaign, updateCampaignInList, 
     
     const renderTabContent = () => {
         if (!campaign) {
-            return <p className="text-gray-400">Campanha não encontrada ou inválida.</p>;
+            return <p className="text-slate-400">Campanha não encontrada ou inválida.</p>;
         }
         switch (activeTab) {
             case 'info':
                 return (
-                    <div className="bg-gray-700/50 p-4 rounded-lg">
-                        <h3 className="text-xl font-semibold text-purple-300">Detalhes da Campanha</h3>
-                        <p className="text-gray-300 mt-1 whitespace-pre-line">{campaign.description || "Sem descrição."}</p>
-                        <p className="text-xs text-gray-500 mt-2">Criada em: {new Date(campaign.createdAt).toLocaleDateString()}</p>
-                         {campaign.updatedAt && <p className="text-xs text-gray-500">Última atualização: {new Date(campaign.updatedAt).toLocaleString()}</p>}
+                    <div className="bg-slate-800/50 p-4 rounded-lg">
+                        <h3 className="text-xl font-bold text-cyan-300 font-orbitron">Detalhes da Campanha</h3>
+                        <p className="text-slate-300 mt-1 whitespace-pre-line">{campaign.description || "Sem descrição."}</p>
+                        <p className="text-xs text-slate-500 mt-2">Criada em: {new Date(campaign.createdAt).toLocaleDateString()}</p>
+                         {campaign.updatedAt && <p className="text-xs text-slate-500">Última atualização: {new Date(campaign.updatedAt).toLocaleString()}</p>}
                     </div>
                 );
             case 'images':
@@ -783,78 +783,78 @@ const ManageLocalCampaign = ({ campaign: initialCampaign, updateCampaignInList, 
                             <button onClick={() => { setEditingImage(null); setImageName(''); setImageDescription(''); setImageFile(null); setShowImageModal(true);}} className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-md">Adicionar Imagem</button>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {(campaign.images || []).map(img => (<div key={img.id} onClick={() => handleViewDetails(img, 'image')} className="p-3 rounded-lg shadow cursor-pointer transition-all duration-200 hover:ring-2 hover:ring-purple-500 bg-gray-700/50">
-                                <img src={img.imageUrl} alt={img.name} className="w-full h-40 object-cover rounded mb-2 border border-gray-600"/>
-                                <h4 className="text-purple-300 font-semibold truncate mb-1">{img.name}</h4>
-                                <p className="text-gray-400 text-xs line-clamp-3 h-12 overflow-hidden whitespace-pre-line">{img.description}</p>
+                            {(campaign.images || []).map(img => (<div key={img.id} onClick={() => handleViewDetails(img, 'image')} className="p-3 rounded-lg shadow cursor-pointer transition-all duration-200 hover:ring-2 hover:ring-cyan-500 bg-slate-800 border border-slate-700">
+                                <img src={img.imageUrl} alt={img.name} className="w-full h-40 object-cover rounded mb-2 border border-slate-600"/>
+                                <h4 className="text-cyan-300 font-semibold truncate mb-1">{img.name}</h4>
+                                <p className="text-slate-400 text-xs line-clamp-3 h-12 overflow-hidden whitespace-pre-line">{img.description}</p>
                                 <div className="mt-2 flex justify-end gap-2">
                                     <button onClick={(e) => openEditImageModal(e, img)} className="text-blue-400 hover:underline text-xs">Editar</button>
                                     <button onClick={(e) => requestDeleteItem(e, 'image', img.id, img.name)} className="text-red-400 hover:underline text-xs">Excluir</button>
                                 </div>
                             </div>))}
                         </div>
-                        {(campaign.images || []).length === 0 && <p className="text-gray-400 italic">Nenhuma imagem.</p>}
+                        {(campaign.images || []).length === 0 && <p className="text-slate-400 italic">Nenhuma imagem.</p>}
                     </div>
                 );
             case 'bestiary':
                 return (
                     <div>
                         <div className="flex flex-wrap gap-2 mb-4">
-                            <button onClick={() => openAddMonsterModal()} className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-md">Adicionar Monstro Manualmente</button>
+                             <button onClick={() => openAddMonsterModal()} className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-md">Adicionar Monstro Manualmente</button>
                             <button onClick={() => { setGeneratedMonster(null); setMonsterGenKeywords(''); setShowMonsterGeneratorModal(true); }} className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded shadow-md">✨ Gerar Monstro com IA</button>
                             <button onClick={() => setShowImportMonsterModal(true)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md">Importar Monstro do SRD</button>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {(campaign.bestiary || []).map(monster => (
-                                <div key={monster.id} onClick={() => handleViewDetails(monster, 'bestiary')} className={`p-4 rounded-lg shadow cursor-pointer transition-all duration-200 hover:ring-2 ${monster.source === 'ai' ? 'bg-red-800/20 border border-red-700 hover:ring-red-500' : monster.source === 'srd' ? 'bg-indigo-800/20 border border-indigo-700 hover:ring-indigo-500' : 'bg-gray-700/50 hover:ring-purple-500'}`}>
-                                    <h4 className={`font-bold text-lg ${monster.source === 'ai' ? 'text-red-300' : monster.source === 'srd' ? 'text-indigo-300' : 'text-purple-300'}`}>{monster.name} <span className="text-xs text-gray-400">({monster.source})</span></h4>
-                                    <p className="text-sm text-gray-300 mt-2 line-clamp-3 h-16 overflow-hidden whitespace-pre-line">{monster.description || (monster.fullData && 'Clique para ver detalhes...')}</p>
+                                <div key={monster.id} onClick={() => handleViewDetails(monster, 'bestiary')} className={`p-4 rounded-lg shadow cursor-pointer transition-all duration-200 hover:ring-2 ${monster.source === 'ai' ? 'bg-red-900/40 border border-red-700 hover:ring-red-500' : monster.source === 'srd' ? 'bg-indigo-900/40 border border-indigo-700 hover:ring-indigo-500' : 'bg-slate-800/80 border border-slate-700 hover:ring-cyan-500'}`}>
+                                    <h4 className={`font-bold text-lg ${monster.source === 'ai' ? 'text-red-300' : monster.source === 'srd' ? 'text-indigo-300' : 'text-cyan-300'}`}>{monster.name} <span className="text-xs text-slate-400">({monster.source})</span></h4>
+                                    <p className="text-sm text-slate-300 mt-2 line-clamp-3 h-16 overflow-hidden whitespace-pre-line">{monster.description || (monster.fullData && 'Clique para ver detalhes...')}</p>
                                     <div className="mt-3 flex justify-end">
                                         <button onClick={(e) => requestDeleteItem(e, 'bestiary', monster.id, monster.name)} className="text-red-400 hover:underline text-xs">Excluir</button>
                                     </div>
                                 </div>
                             ))}
                         </div>
-                         {(campaign.bestiary || []).length === 0 && <p className="text-gray-400 italic">Nenhum monstro no bestiário.</p>}
+                         {(campaign.bestiary || []).length === 0 && <p className="text-slate-400 italic">Nenhum monstro no bestiário.</p>}
                     </div>
                 );
              case 'npcs':
                 return (
                     <div>
-                        <button onClick={() => { setEditingNpc(null); setNpcName(''); setNpcDesc(''); setNpcKeywords(''); setNpcImageUrl(''); setShowNpcModal(true); }} className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 shadow-md">Adicionar NPC</button>
+                        <button onClick={() => { setEditingNpc(null); setNpcName(''); setNpcDesc(''); setNpcKeywords(''); setNpcImageUrl(''); setShowNpcModal(true); }} className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-md">Adicionar NPC</button>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {(campaign.npcs || []).map(n => (<div key={n.id} onClick={() => handleViewDetails(n, 'npc')} className="bg-gray-700/50 p-3 rounded-lg shadow cursor-pointer transition-all duration-200 hover:ring-2 hover:ring-purple-500">
-                                <h4 className="text-purple-300 font-semibold truncate mb-1">{n.name}</h4>
-                                {n.imageUrl && <img src={n.imageUrl} alt={n.name} className="w-full h-32 object-cover rounded my-1 border border-gray-600" onError={(e) => e.target.style.display='none'}/>}
-                                <p className="text-gray-400 text-xs line-clamp-3 h-12 overflow-hidden my-1 whitespace-pre-line">{n.description}</p>
-                                <p className="text-gray-500 text-xs truncate">Palavras-chave: {n.keywords || "N/A"}</p>
+                            {(campaign.npcs || []).map(n => (<div key={n.id} onClick={() => handleViewDetails(n, 'npc')} className="bg-slate-800 border border-slate-700 p-3 rounded-lg shadow cursor-pointer transition-all duration-200 hover:ring-2 hover:ring-cyan-500">
+                                <h4 className="text-cyan-300 font-semibold truncate mb-1">{n.name}</h4>
+                                {n.imageUrl && <img src={n.imageUrl} alt={n.name} className="w-full h-32 object-cover rounded my-1 border border-slate-600" onError={(e) => e.target.style.display='none'}/>}
+                                <p className="text-slate-400 text-xs line-clamp-3 h-12 overflow-hidden my-1 whitespace-pre-line">{n.description}</p>
+                                <p className="text-slate-500 text-xs truncate">Palavras-chave: {n.keywords || "N/A"}</p>
                                 <div className="mt-2 flex justify-end gap-2">
                                     <button onClick={(e) => openEditNpcModal(e, n)} className="text-blue-400 hover:underline text-xs">Editar</button>
                                     <button onClick={(e) => requestDeleteItem(e, 'npc', n.id, n.name)} className="text-red-400 hover:underline text-xs">Excluir</button>
                                 </div>
                             </div>))}
                         </div>
-                        {(campaign.npcs || []).length === 0 && <p className="text-gray-400 italic">Nenhum NPC.</p>}
+                        {(campaign.npcs || []).length === 0 && <p className="text-slate-400 italic">Nenhum NPC.</p>}
                     </div>
                 );
             case 'materials':
                 return (
                     <div>
-                        <button onClick={() => { setEditingMaterial(null); setMaterialName(''); setMaterialNotes(''); setShowMaterialModal(true); }} className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 shadow-md">Adicionar Material</button>
+                        <button onClick={() => { setEditingMaterial(null); setMaterialName(''); setMaterialNotes(''); setShowMaterialModal(true); }} className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-md">Adicionar Material</button>
                         <ul className="space-y-3">
-                           {(campaign.materials || []).map(mat => (<li key={mat.id} className="bg-gray-700/50 p-3 rounded-lg shadow flex justify-between items-start"><div><h4 className="text-purple-300 font-medium">{mat.name}</h4><p className="text-gray-400 text-xs whitespace-pre-line">{mat.notes}</p></div><div className="flex gap-2 shrink-0 ml-2"><button onClick={(e) => { e.stopPropagation(); openEditMaterialModal(mat); }} className="text-blue-400 hover:underline text-xs">Editar</button><button onClick={(e) => requestDeleteItem(e, 'material', mat.id, mat.name)} className="text-red-400 hover:underline text-xs">Excluir</button></div></li>))}
+                           {(campaign.materials || []).map(mat => (<li key={mat.id} className="bg-slate-800 border border-slate-700 p-3 rounded-lg shadow flex justify-between items-start"><div><h4 className="text-cyan-300 font-medium">{mat.name}</h4><p className="text-slate-400 text-xs whitespace-pre-line">{mat.notes}</p></div><div className="flex gap-2 shrink-0 ml-2"><button onClick={(e) => { e.stopPropagation(); openEditMaterialModal(mat); }} className="text-blue-400 hover:underline text-xs">Editar</button><button onClick={(e) => requestDeleteItem(e, 'material', mat.id, mat.name)} className="text-red-400 hover:underline text-xs">Excluir</button></div></li>))}
                         </ul>
-                        {(campaign.materials || []).length === 0 && <p className="text-gray-400 italic">Nenhum material.</p>}
+                        {(campaign.materials || []).length === 0 && <p className="text-slate-400 italic">Nenhum material.</p>}
                     </div>
                 );
             case 'gmNotes':
                  return (
                     <div>
-                        <button onClick={() => { setEditingGmNote(null); setGmNoteContent(''); setShowGmNoteModal(true);}} className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 shadow-md">+ Nova Nota</button>
+                        <button onClick={() => { setEditingGmNote(null); setGmNoteContent(''); setShowGmNoteModal(true);}} className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-md">+ Nova Nota</button>
                         <div className="space-y-4">
-                            {(campaign.gmNotes || []).map(note => (<div key={note.id} className="bg-gray-700/50 p-4 rounded-lg shadow"><p className="text-gray-300 whitespace-pre-wrap">{note.content}</p><div className="flex justify-between items-center mt-2 pt-2 border-t border-gray-600"><small className="text-gray-500 text-xs">Criada: {new Date(note.createdAt).toLocaleString()}{note.updatedAt && ` (Atualizada: ${new Date(note.updatedAt).toLocaleString()})`}</small><div className="flex gap-2"><button onClick={(e) => { e.stopPropagation(); openEditGmNoteModal(note); }} className="text-blue-400 hover:underline text-xs">Editar</button><button onClick={(e) => requestDeleteItem(e, 'gmNote', note.id, 'esta nota')} className="text-red-400 hover:underline text-xs">Excluir</button></div></div></div>))}
+                            {(campaign.gmNotes || []).map(note => (<div key={note.id} className="bg-slate-800 border border-slate-700 p-4 rounded-lg shadow"><p className="text-slate-300 whitespace-pre-wrap">{note.content}</p><div className="flex justify-between items-center mt-2 pt-2 border-t border-slate-600"><small className="text-slate-500 text-xs">Criada: {new Date(note.createdAt).toLocaleString()}{note.updatedAt && ` (Atualizada: ${new Date(note.updatedAt).toLocaleString()})`}</small><div className="flex gap-2"><button onClick={(e) => { e.stopPropagation(); openEditGmNoteModal(note); }} className="text-blue-400 hover:underline text-xs">Editar</button><button onClick={(e) => requestDeleteItem(e, 'gmNote', note.id, 'esta nota')} className="text-red-400 hover:underline text-xs">Excluir</button></div></div></div>))}
                         </div>
-                        {(campaign.gmNotes || []).length === 0 && <p className="text-gray-400 italic">Nenhuma nota.</p>}
+                        {(campaign.gmNotes || []).length === 0 && <p className="text-slate-400 italic">Nenhuma nota.</p>}
                     </div>
                 );
             case 'characterSheetsData': 
@@ -863,18 +863,18 @@ const ManageLocalCampaign = ({ campaign: initialCampaign, updateCampaignInList, 
                         <button onClick={() => { setEditingCharacterSheet(null); setCsPlayerName(''); setCsCharacterName(''); setCsClass(''); setCsLevel(1); setCsAttributes({}); setCsOtherNotes(''); setShowCharacterSheetModal(true);}} className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 shadow-md">Adicionar Ficha de Personagem</button>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {(campaign.characterSheetsData || []).map(sheet => (
-                                <div key={sheet.id} className="bg-gray-700/50 p-4 rounded-lg shadow">
+                                <div key={sheet.id} className="bg-slate-800 border border-slate-700 p-4 rounded-lg shadow">
                                      <div className="flex justify-between items-start">
                                         <div>
-                                            <h4 className="text-purple-300 font-semibold">{sheet.characterName}</h4>
-                                            <p className="text-xs text-gray-400">{sheet.playerName || 'Jogador Desconhecido'}</p>
+                                            <h4 className="text-cyan-300 font-semibold">{sheet.characterName}</h4>
+                                            <p className="text-xs text-slate-400">{sheet.playerName || 'Jogador Desconhecido'}</p>
                                         </div>
                                         <div className="text-right">
                                             <p className="text-sm font-medium">{sheet.class || 'Classe'}{sheet.level ? ` - Nv. ${sheet.level}` : ''}</p>
-                                            <p className="text-xs text-gray-400">{sheet.attributes?.race || 'Raça'}</p>
+                                            <p className="text-xs text-slate-400">{sheet.attributes?.race || 'Raça'}</p>
                                         </div>
                                     </div>
-                                    <div className="mt-3 pt-3 border-t border-gray-600/50 grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                                    <div className="mt-3 pt-3 border-t border-slate-600/50 grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
                                         <p><strong>PV:</strong> {sheet.attributes?.hp_current || '?'}/{sheet.attributes?.hp_max || '?'}</p>
                                         <p><strong>CA:</strong> {sheet.attributes?.ac || '?'}</p>
                                         <p><strong>Desloc.:</strong> {sheet.attributes?.speed || '?'}</p>
@@ -887,7 +887,7 @@ const ManageLocalCampaign = ({ campaign: initialCampaign, updateCampaignInList, 
                                 </div>
                             ))}
                         </div>
-                        {(campaign.characterSheetsData || []).length === 0 && <p className="text-gray-400 italic">Nenhuma ficha de personagem anotada.</p>}
+                        {(campaign.characterSheetsData || []).length === 0 && <p className="text-slate-400 italic">Nenhuma ficha de personagem anotada.</p>}
                     </div>
                 );
 
@@ -895,20 +895,23 @@ const ManageLocalCampaign = ({ campaign: initialCampaign, updateCampaignInList, 
         }
     };
     
-    const TABS = ['info', 'bestiary', 'images', 'npcs', 'materials', 'gmNotes', 'characterSheetsData'];
+    const TABS = ['info', 'bestiary', 'images', 'npcs', 'materials', 'gmNotes', 'characterSheetsData', 'calendar'];
 
     return (
         <div className="p-4 md:p-6">
-            <button onClick={goBack} className="mb-6 text-purple-400 hover:underline flex items-center group"><svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd" /></svg>Voltar</button>
+            <button onClick={goBack} className="mb-6 text-cyan-400 hover:text-cyan-300 flex items-center group transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd" /></svg>
+                Voltar
+            </button>
             <div className="flex flex-col sm:flex-row justify-between items-start mb-6 gap-3">
                 <div className="max-w-xl flex items-center gap-4">
-                    <h2 className="text-3xl font-semibold text-purple-300 break-words">{campaign?.name || "Campanha sem nome"}</h2>
+                    <h2 className="text-3xl font-bold font-orbitron text-cyan-300 break-words">{campaign?.name || "Campanha sem nome"}</h2>
                 </div>
                 <button onClick={onDeleteCampaignRequest} className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-3 rounded-lg shadow-md whitespace-nowrap">Excluir Campanha</button>
             </div>
-            <div className="mb-6 border-b border-gray-700">
+            <div className="mb-6 border-b border-slate-700">
                 <nav className="flex space-x-1 sm:space-x-4 -mb-px overflow-x-auto pb-1">
-                    {TABS.map(tab => (<button key={tab} onClick={() => setActiveTab(tab)} className={`py-3 px-2 sm:px-4 font-medium text-sm border-b-2 whitespace-nowrap ${activeTab === tab ? 'border-purple-500 text-purple-400' : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-500'}`}>{tab === 'characterSheetsData' ? 'Fichas Personagens' : tab.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</button>))}
+                    {TABS.map(tab => (<button key={tab} onClick={() => setActiveTab(tab)} className={`py-3 px-2 sm:px-4 font-medium text-sm border-b-2 whitespace-nowrap ${activeTab === tab ? 'border-cyan-500 text-cyan-400' : 'border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-500'}`}>{tab === 'characterSheetsData' ? 'Fichas' : tab === 'gmNotes' ? 'Notas' : tab.charAt(0).toUpperCase() + tab.slice(1)}</button>))}
                 </nav>
             </div>
             {renderTabContent()}
@@ -918,12 +921,12 @@ const ManageLocalCampaign = ({ campaign: initialCampaign, updateCampaignInList, 
             <ImportMonsterModal isOpen={showImportMonsterModal} onClose={() => setShowImportMonsterModal(false)} onImport={handleImportMonster} showNotification={showNotification}/>
             <Modal isOpen={showImageModal} onClose={() => setShowImageModal(false)} title={editingImage ? "Editar Imagem" : "Adicionar Nova Imagem"}>
                 <form onSubmit={(e) => { e.preventDefault(); handleSaveImage(); }} className="space-y-4">
-                    <div><label>Nome da Imagem</label><input type="text" value={imageName} onChange={e => setImageName(e.target.value)} className="w-full p-2 bg-gray-700 rounded" required/></div>
-                    <div><label>Descrição</label><textarea value={imageDescription} onChange={e => setImageDescription(e.target.value)} rows="3" className="w-full p-2 bg-gray-700 rounded"></textarea></div>
+                    <div><label>Nome da Imagem</label><input type="text" value={imageName} onChange={e => setImageName(e.target.value)} className="w-full p-2 bg-slate-700 rounded" required/></div>
+                    <div><label>Descrição</label><textarea value={imageDescription} onChange={e => setImageDescription(e.target.value)} rows="3" className="w-full p-2 bg-slate-700 rounded"></textarea></div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-300">Ficheiro de Imagem</label>
+                        <label className="block text-sm font-medium text-slate-300">Ficheiro de Imagem</label>
                         <input type="file" accept="image/*" onChange={handleImageFileChange}
-                            className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200 cursor-pointer" 
+                            className="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-100 file:text-cyan-700 hover:file:bg-cyan-200 cursor-pointer" 
                             required={!editingImage} />
                     </div>
                     {imageFile && <img src={imageFile} alt="Pré-visualização" className="w-full rounded mt-2 max-h-48 object-contain"/>}
@@ -933,9 +936,9 @@ const ManageLocalCampaign = ({ campaign: initialCampaign, updateCampaignInList, 
 
             <Modal isOpen={showAddMonsterModal} onClose={() => setShowAddMonsterModal(false)} title="Adicionar Monstro Manualmente" size="lg">
                 <form onSubmit={(e) => { e.preventDefault(); handleSaveMonster(); }} className="space-y-4">
-                    <div><label>Nome do Monstro</label><input type="text" value={monsterName} onChange={e => setMonsterName(e.target.value)} className="w-full p-2 bg-gray-700 rounded" required/></div>
-                    <div><label>Descrição</label><textarea value={monsterDescription} onChange={e => setMonsterDescription(e.target.value)} rows="3" className="w-full p-2 bg-gray-700 rounded"></textarea></div>
-                    <div><label>Bloco de Estatísticas</label><textarea value={monsterStats} onChange={e => setMonsterStats(e.target.value)} rows="5" className="w-full p-2 bg-gray-700 rounded"></textarea></div>
+                    <div><label>Nome do Monstro</label><input type="text" value={monsterName} onChange={e => setMonsterName(e.target.value)} className="w-full p-2 bg-slate-700 rounded" required/></div>
+                    <div><label>Descrição</label><textarea value={monsterDescription} onChange={e => setMonsterDescription(e.target.value)} rows="3" className="w-full p-2 bg-slate-700 rounded"></textarea></div>
+                    <div><label>Bloco de Estatísticas</label><textarea value={monsterStats} onChange={e => setMonsterStats(e.target.value)} rows="5" className="w-full p-2 bg-slate-700 rounded"></textarea></div>
                     <button type="submit" className="w-full p-2 bg-green-600 hover:bg-green-700 rounded">Adicionar Monstro</button>
                 </form>
             </Modal>
@@ -943,18 +946,18 @@ const ManageLocalCampaign = ({ campaign: initialCampaign, updateCampaignInList, 
             <Modal isOpen={showMonsterGeneratorModal} onClose={() => setShowMonsterGeneratorModal(false)} title="Gerador de Monstros com IA" size="2xl">
                 <div className="space-y-4">
                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Palavras-chave</label>
-                        <input type="text" value={monsterGenKeywords} onChange={e => setMonsterGenKeywords(e.target.value)} className="w-full p-2 bg-gray-700 rounded border border-gray-600" placeholder="Ex: golem de obsidiana, elemental, mágico"/>
+                        <label className="block text-sm font-medium text-slate-300 mb-1">Palavras-chave</label>
+                        <input type="text" value={monsterGenKeywords} onChange={e => setMonsterGenKeywords(e.target.value)} className="w-full p-2 bg-slate-700 rounded border border-slate-600" placeholder="Ex: golem de obsidiana, elemental, mágico"/>
                     </div>
                     <button onClick={handleGenerateMonster} disabled={generatingMonster} className="w-full p-2 bg-teal-600 hover:bg-teal-700 rounded disabled:opacity-50 flex items-center justify-center gap-2">
                         {generatingMonster ? <><svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25"></circle><path d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" fill="currentColor" className="opacity-75"></path></svg>Gerando...</> : "✨ Gerar Monstro"}
                     </button>
                     {generatedMonster && (
-                         <div className="mt-3 bg-red-800/20 border border-red-700 p-4 rounded-md max-h-72 overflow-y-auto">
+                         <div className="mt-3 bg-red-900/40 border border-red-700 p-4 rounded-md max-h-72 overflow-y-auto">
                             <h4 className="text-red-300 font-bold text-lg">{generatedMonster.name}</h4>
-                            <p className="text-sm text-gray-300 mt-2 whitespace-pre-line">{generatedMonster.description}</p>
-                            <p className="text-sm text-gray-400 mt-3 font-semibold">Atributos:</p>
-                            <p className="text-sm text-gray-300 whitespace-pre-line">{generatedMonster.stats}</p>
+                            <p className="text-sm text-slate-300 mt-2 whitespace-pre-line">{generatedMonster.description}</p>
+                            <p className="text-sm text-slate-400 mt-3 font-semibold">Atributos:</p>
+                            <p className="text-sm text-slate-300 whitespace-pre-line">{generatedMonster.stats}</p>
                             <button onClick={handleAddGeneratedMonsterToBestiary} className="mt-3 w-full p-2 bg-green-600 hover:bg-green-700 rounded text-sm">Adicionar ao Bestiário</button>
                         </div>
                     )}
@@ -963,59 +966,59 @@ const ManageLocalCampaign = ({ campaign: initialCampaign, updateCampaignInList, 
 
             <Modal isOpen={showNpcModal} onClose={() => setShowNpcModal(false)} title={editingNpc ? "Editar NPC" : "Adicionar NPC"} size="lg">
                 <form onSubmit={(e) => { e.preventDefault(); handleSaveNpc(); }} className="space-y-4">
-                    <div><label>Nome do NPC</label><input type="text" value={npcName} onChange={e => setNpcName(e.target.value)} className="w-full p-2 bg-gray-700 rounded" required/></div>
-                    <div><label>Palavras-chave para IA</label><input type="text" value={npcKeywords} onChange={e => setNpcKeywords(e.target.value)} className="w-full p-2 bg-gray-700 rounded" placeholder="Ex: misterioso, elfo, taverneiro"/></div>
+                    <div><label>Nome do NPC</label><input type="text" value={npcName} onChange={e => setNpcName(e.target.value)} className="w-full p-2 bg-slate-700 rounded" required/></div>
+                    <div><label>Palavras-chave para IA</label><input type="text" value={npcKeywords} onChange={e => setNpcKeywords(e.target.value)} className="w-full p-2 bg-slate-700 rounded" placeholder="Ex: misterioso, elfo, taverneiro"/></div>
                     <button type="button" onClick={handleGenerateNpcDescription} disabled={generatingNpcDesc || !npcName.trim()} className="w-full p-2 bg-teal-600 hover:bg-teal-700 rounded disabled:opacity-50"> {generatingNpcDesc ? "Gerando..." : "✨ Gerar Descrição com IA"}</button>
-                    <div><label>Descrição</label><textarea value={npcDesc} onChange={e => setNpcDesc(e.target.value)} rows="4" className="w-full p-2 bg-gray-700 rounded"></textarea></div>
-                    <div><label>URL da Imagem (opcional)</label><input type="url" value={npcImageUrl} onChange={e => setNpcImageUrl(e.target.value)} className="w-full p-2 bg-gray-700 rounded" placeholder="https://exemplo.com/imagem.jpg"/></div>
+                    <div><label>Descrição</label><textarea value={npcDesc} onChange={e => setNpcDesc(e.target.value)} rows="4" className="w-full p-2 bg-slate-700 rounded"></textarea></div>
+                    <div><label>URL da Imagem (opcional)</label><input type="url" value={npcImageUrl} onChange={e => setNpcImageUrl(e.target.value)} className="w-full p-2 bg-slate-700 rounded" placeholder="https://exemplo.com/imagem.jpg"/></div>
                     <button type="submit" className="w-full p-2 bg-green-600 hover:bg-green-700 rounded">{editingNpc ? "Salvar NPC" : "Adicionar NPC"}</button>
                 </form>
             </Modal>
 
             <Modal isOpen={showMaterialModal} onClose={() => setShowMaterialModal(false)} title={editingMaterial ? "Editar Material" : "Adicionar Material"}>
                 <form onSubmit={(e) => { e.preventDefault(); handleSaveMaterial(); }} className="space-y-4">
-                    <div><label>Nome do Material</label><input type="text" value={materialName} onChange={e => setMaterialName(e.target.value)} className="w-full p-2 bg-gray-700 rounded" required/></div>
-                    <div><label>Anotações (Ex: Livro de Regras p.42, PDF no PC)</label><textarea value={materialNotes} onChange={e => setMaterialNotes(e.target.value)} rows="3" className="w-full p-2 bg-gray-700 rounded"></textarea></div>
+                    <div><label>Nome do Material</label><input type="text" value={materialName} onChange={e => setMaterialName(e.target.value)} className="w-full p-2 bg-slate-700 rounded" required/></div>
+                    <div><label>Anotações (Ex: Livro de Regras p.42, PDF no PC)</label><textarea value={materialNotes} onChange={e => setMaterialNotes(e.target.value)} rows="3" className="w-full p-2 bg-slate-700 rounded"></textarea></div>
                     <button type="submit" className="w-full p-2 bg-green-600 hover:bg-green-700 rounded">{editingMaterial ? "Salvar Material" : "Adicionar Material"}</button>
                 </form>
             </Modal>
 
             <Modal isOpen={showGmNoteModal} onClose={() => setShowGmNoteModal(false)} title={editingGmNote ? "Editar Nota" : "Adicionar Nota Privada"}>
                 <form onSubmit={(e) => { e.preventDefault(); handleSaveGmNote(); }} className="space-y-4">
-                    <div><label>Conteúdo da Nota</label><textarea value={gmNoteContent} onChange={e => setGmNoteContent(e.target.value)} rows="5" className="w-full p-2 bg-gray-700 rounded" required></textarea></div>
+                    <div><label>Conteúdo da Nota</label><textarea value={gmNoteContent} onChange={e => setGmNoteContent(e.target.value)} rows="5" className="w-full p-2 bg-slate-700 rounded" required></textarea></div>
                     <button type="submit" className="w-full p-2 bg-green-600 hover:bg-green-700 rounded">{editingGmNote ? "Salvar Nota" : "Adicionar Nota"}</button>
                 </form>
             </Modal>
             
             <Modal isOpen={showCharacterSheetModal} onClose={() => setShowCharacterSheetModal(false)} title={editingCharacterSheet ? "Editar Ficha" : "Adicionar Ficha de Personagem"} size="4xl">
                 <form onSubmit={(e) => {e.preventDefault(); handleSaveCharacterSheet();}} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-900/50 rounded-lg">
-                        <h3 className="md:col-span-3 text-lg font-semibold text-purple-300 border-b border-purple-500/50 pb-2 mb-2">Informações Básicas</h3>
-                        <div><label>Nome do Jogador</label><input type="text" value={csPlayerName} onChange={e => setCsPlayerName(e.target.value)} className="w-full p-2 bg-gray-700 rounded"/></div>
-                        <div><label>Nome do Personagem</label><input type="text" value={csCharacterName} onChange={e => setCsCharacterName(e.target.value)} className="w-full p-2 bg-gray-700 rounded" required/></div>
-                         <div><label>Raça</label><input type="text" value={csAttributes.race || ''} onChange={e => setCsAttributes(s => ({...s, race: e.target.value}))} className="w-full p-2 bg-gray-700 rounded"/></div>
-                        <div><label>Classe</label><input type="text" value={csClass} onChange={e => setCsClass(e.target.value)} className="w-full p-2 bg-gray-700 rounded"/></div>
-                        <div><label>Nível</label><input type="number" value={csLevel} min="1" onChange={e => setCsLevel(parseInt(e.target.value) || 1)} className="w-full p-2 bg-gray-700 rounded"/></div>
-                        <div><label>Antecedente</label><input type="text" value={csAttributes.background || ''} onChange={e => setCsAttributes(s => ({...s, background: e.target.value}))} className="w-full p-2 bg-gray-700 rounded"/></div>
-                        <div className="md:col-span-3"><label>Tendência</label><input type="text" value={csAttributes.alignment || ''} onChange={e => setCsAttributes(s => ({...s, alignment: e.target.value}))} className="w-full p-2 bg-gray-700 rounded"/></div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-slate-900/50 rounded-lg">
+                        <h3 className="md:col-span-3 text-lg font-semibold text-cyan-300 font-orbitron border-b border-cyan-500/50 pb-2 mb-2">Informações Básicas</h3>
+                        <div><label>Nome do Jogador</label><input type="text" value={csPlayerName} onChange={e => setCsPlayerName(e.target.value)} className="w-full p-2 bg-slate-700 rounded"/></div>
+                        <div><label>Nome do Personagem</label><input type="text" value={csCharacterName} onChange={e => setCsCharacterName(e.target.value)} className="w-full p-2 bg-slate-700 rounded" required/></div>
+                         <div><label>Raça</label><input type="text" value={csAttributes.race || ''} onChange={e => setCsAttributes(s => ({...s, race: e.target.value}))} className="w-full p-2 bg-slate-700 rounded"/></div>
+                        <div><label>Classe</label><input type="text" value={csClass} onChange={e => setCsClass(e.target.value)} className="w-full p-2 bg-slate-700 rounded"/></div>
+                        <div><label>Nível</label><input type="number" value={csLevel} min="1" onChange={e => setCsLevel(parseInt(e.target.value) || 1)} className="w-full p-2 bg-slate-700 rounded"/></div>
+                        <div><label>Antecedente</label><input type="text" value={csAttributes.background || ''} onChange={e => setCsAttributes(s => ({...s, background: e.target.value}))} className="w-full p-2 bg-slate-700 rounded"/></div>
+                        <div className="md:col-span-3"><label>Tendência</label><input type="text" value={csAttributes.alignment || ''} onChange={e => setCsAttributes(s => ({...s, alignment: e.target.value}))} className="w-full p-2 bg-slate-700 rounded"/></div>
                     </div>
 
-                     <div className="grid grid-cols-2 md:grid-cols-5 gap-4 p-4 bg-gray-900/50 rounded-lg">
-                        <h3 className="col-span-full text-lg font-semibold text-purple-300 border-b border-purple-500/50 pb-2 mb-2">Combate</h3>
-                        <div><label>CA</label><input type="number" value={csAttributes.ac || ''} onChange={e => setCsAttributes(s => ({...s, ac: e.target.value}))} className="w-full p-2 bg-gray-700 rounded"/></div>
-                        <div><label>Iniciativa</label><input type="text" value={csAttributes.initiative || ''} onChange={e => setCsAttributes(s => ({...s, initiative: e.target.value}))} className="w-full p-2 bg-gray-700 rounded"/></div>
-                        <div><label>Deslocamento</label><input type="text" value={csAttributes.speed || ''} onChange={e => setCsAttributes(s => ({...s, speed: e.target.value}))} className="w-full p-2 bg-gray-700 rounded"/></div>
-                        <div><label>PV Atuais</label><input type="number" value={csAttributes.hp_current || ''} onChange={e => setCsAttributes(s => ({...s, hp_current: e.target.value}))} className="w-full p-2 bg-gray-700 rounded"/></div>
-                        <div><label>PV Máximos</label><input type="number" value={csAttributes.hp_max || ''} onChange={e => setCsAttributes(s => ({...s, hp_max: e.target.value}))} className="w-full p-2 bg-gray-700 rounded"/></div>
+                     <div className="grid grid-cols-2 md:grid-cols-5 gap-4 p-4 bg-slate-900/50 rounded-lg">
+                        <h3 className="col-span-full text-lg font-semibold text-cyan-300 font-orbitron border-b border-cyan-500/50 pb-2 mb-2">Combate</h3>
+                        <div><label>CA</label><input type="number" value={csAttributes.ac || ''} onChange={e => setCsAttributes(s => ({...s, ac: e.target.value}))} className="w-full p-2 bg-slate-700 rounded"/></div>
+                        <div><label>Iniciativa</label><input type="text" value={csAttributes.initiative || ''} onChange={e => setCsAttributes(s => ({...s, initiative: e.target.value}))} className="w-full p-2 bg-slate-700 rounded"/></div>
+                        <div><label>Deslocamento</label><input type="text" value={csAttributes.speed || ''} onChange={e => setCsAttributes(s => ({...s, speed: e.target.value}))} className="w-full p-2 bg-slate-700 rounded"/></div>
+                        <div><label>PV Atuais</label><input type="number" value={csAttributes.hp_current || ''} onChange={e => setCsAttributes(s => ({...s, hp_current: e.target.value}))} className="w-full p-2 bg-slate-700 rounded"/></div>
+                        <div><label>PV Máximos</label><input type="number" value={csAttributes.hp_max || ''} onChange={e => setCsAttributes(s => ({...s, hp_max: e.target.value}))} className="w-full p-2 bg-slate-700 rounded"/></div>
                     </div>
                      
-                     <div className="p-4 bg-gray-900/50 rounded-lg">
-                         <h3 className="text-lg font-semibold text-purple-300 border-b border-purple-500/50 pb-2 mb-2">Atributos</h3>
+                     <div className="p-4 bg-slate-900/50 rounded-lg">
+                         <h3 className="text-lg font-semibold text-cyan-300 font-orbitron border-b border-cyan-500/50 pb-2 mb-2">Atributos</h3>
                          <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
                              {Object.entries({strength: 'FOR', dexterity: 'DES', constitution: 'CON', intelligence: 'INT', wisdom: 'SAB', charisma: 'CAR'}).map(([key, label]) => (
                                 <div key={key}>
                                     <label>{label}</label>
-                                    <input type="number" value={csAttributes[key] || ''} onChange={e => setCsAttributes(s => ({...s, [key]: e.target.value}))} className="w-full p-2 bg-gray-700 rounded"/>
+                                    <input type="number" value={csAttributes[key] || ''} onChange={e => setCsAttributes(s => ({...s, [key]: e.target.value}))} className="w-full p-2 bg-slate-700 rounded"/>
                                 </div>
                              ))}
                         </div>
@@ -1023,7 +1026,7 @@ const ManageLocalCampaign = ({ campaign: initialCampaign, updateCampaignInList, 
 
                     <div>
                         <label>Outras Notas (Equipamento, História, etc.)</label>
-                        <textarea value={csOtherNotes} onChange={e => setCsOtherNotes(e.target.value)} rows="4" className="w-full p-2 bg-gray-700 rounded"></textarea>
+                        <textarea value={csOtherNotes} onChange={e => setCsOtherNotes(e.target.value)} rows="4" className="w-full p-2 bg-slate-700 rounded"></textarea>
                     </div>
                     
                     <button type="submit" className="w-full p-2 bg-green-600 hover:bg-green-700 rounded">{editingCharacterSheet ? "Salvar Ficha" : "Adicionar Ficha"}</button>
@@ -1063,45 +1066,50 @@ const App = () => {
         return () => clearTimeout(timer);
     }, []);
 
-    if (isLoading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-purple-500"></div>
-                <p className="ml-4 text-xl">Carregando StarForge Local...</p>
-            </div>
-        );
-    }
-    
     return (
-        <div className="min-h-screen bg-gray-900 text-white font-sans antialiased">
-            <Notification message={notification.message} type={notification.type} onClose={() => setNotification({ message: '', type: '' })} />
-            
-            <header className="bg-gray-800/95 backdrop-blur-md p-4 shadow-lg sticky top-0 z-40">
-                <div className="container mx-auto flex justify-between items-center">
-                    <div className="text-2xl font-bold text-purple-500">StarForge <span className="text-sm text-gray-500">(Local)</span></div>
-                    <nav className="flex space-x-2 sm:space-x-4">
-                        <button onClick={() => setActiveView('campaigns')} className={`py-2 px-3 rounded-md text-sm font-medium ${activeView === 'campaigns' ? 'bg-purple-600 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>Minhas Campanhas</button>
-                        <button onClick={() => setActiveView('dnd_resources')} className={`py-2 px-3 rounded-md text-sm font-medium ${activeView === 'dnd_resources' ? 'bg-purple-600 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>Recursos D&D 5e</button>
-                    </nav>
-                </div>
-            </header>
+        <>
+            <style>
+              {`
+                @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600&family=Orbitron:wght@400;700&display=swap');
+                .font-orbitron { font-family: 'Orbitron', sans-serif; }
+                .font-exo2 { font-family: 'Exo 2', sans-serif; }
+              `}
+            </style>
+            <div className="min-h-screen bg-slate-900 text-slate-200 font-exo2 antialiased">
+                <Notification message={notification.message} type={notification.type} onClose={() => setNotification({ message: '', type: '' })} />
+                
+                <header className="bg-slate-900/70 backdrop-blur-md p-4 shadow-lg shadow-cyan-500/10 sticky top-0 z-40 border-b border-slate-800">
+                    <div className="container mx-auto flex justify-between items-center">
+                        <div className="text-2xl font-bold text-cyan-400 font-orbitron">StarForge</div>
+                        <nav className="flex space-x-2 sm:space-x-4">
+                            <button onClick={() => setActiveView('campaigns')} className={`py-2 px-3 rounded-md text-sm font-medium transition-colors ${activeView === 'campaigns' ? 'bg-cyan-500 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white'}`}>Minhas Campanhas</button>
+                            <button onClick={() => setActiveView('dnd_resources')} className={`py-2 px-3 rounded-md text-sm font-medium transition-colors ${activeView === 'dnd_resources' ? 'bg-cyan-500 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white'}`}>Recursos D&D 5e</button>
+                        </nav>
+                    </div>
+                </header>
 
-            <main className="container mx-auto p-2 sm:p-4">
-                {activeView === 'campaigns' ? (
-                    <MasterDashboard 
-                        campaignsData={appData} 
-                        setCampaignsData={setAppData} 
-                        showNotification={showNotification} 
-                    />
-                ) : (
-                    <DndResourcesView showNotification={showNotification} />
-                )}
-            </main>
-             <footer className="text-center py-8 text-gray-500 text-sm border-t border-gray-700/50 mt-12">
-                <p>&copy; {new Date().getFullYear()} StarForge RPG Manager (Versão Local). Seus dados, seu navegador.</p>
-                 <p className="text-xs mt-1">Dica: Faça backups regulares exportando seus dados (funcionalidade futura) ou copiando o conteúdo do localStorage.</p>
-            </footer>
-        </div>
+                <main className="container mx-auto p-2 sm:p-4">
+                    {isLoading ? (
+                         <div className="min-h-screen flex items-center justify-center">
+                            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-cyan-500"></div>
+                            <p className="ml-4 text-xl">Carregando StarForge...</p>
+                        </div>
+                    ) : activeView === 'campaigns' ? (
+                        <MasterDashboard 
+                            campaignsData={appData} 
+                            setCampaignsData={setAppData} 
+                            showNotification={showNotification} 
+                        />
+                    ) : (
+                        <DndResourcesView showNotification={showNotification} />
+                    )}
+                </main>
+                 <footer className="text-center py-8 text-slate-500 text-sm border-t border-slate-800/50 mt-12">
+                    <p>&copy; {new Date().getFullYear()} StarForge RPG Manager. Criado por RaryPoters.</p>
+                     <p className="text-xs mt-1">Dica: Faça backups regulares exportando seus dados (funcionalidade futura) ou copiando o conteúdo do localStorage.</p>
+                </footer>
+            </div>
+        </>
     );
 };
 
@@ -1261,54 +1269,54 @@ const DndResourcesView = ({ showNotification }) => {
         
         switch(activeTab) {
             case 'spells':
-                 return <div className="space-y-2 text-sm text-gray-300">
+                 return <div className="space-y-2 text-sm text-slate-300">
                         <p><strong>Nível:</strong> {item.level > 0 ? `${item.level}º Círculo de ` : "Truque de "} {getTranslatedSchool(item.school.name)}</p>
                         <p><strong>Tempo de Conjuração:</strong> {item.casting_time}</p>
                         <p><strong>Alcance:</strong> {formatDistance(item.range)}</p>
                         <p><strong>Componentes:</strong> {item.components.join(', ')} {item.material && `(${item.material.substring(0, 100)}${item.material.length > 100 ? '...' : ''})`}</p>
                         <p><strong>Duração:</strong> {item.duration}</p>
-                        <div className="mt-3 pt-3 border-t border-gray-600">{(item.desc || []).map((p, i) => <p key={i} className="mb-2">{p}</p>)}</div>
-                        {item.higher_level?.length > 0 && (<div className="mt-3 pt-3 border-t border-gray-600"><p><strong>Em Níveis Superiores:</strong></p>{(item.higher_level).map((p, i) => <p key={i} className="mb-2">{p}</p>)}</div>)}
-                         <p className="text-xs text-gray-500 pt-2">Classes: {(item.classes || []).map(c => c.name).join(', ')}</p>
+                        <div className="mt-3 pt-3 border-t border-slate-700">{(item.desc || []).map((p, i) => <p key={i} className="mb-2">{p}</p>)}</div>
+                        {item.higher_level?.length > 0 && (<div className="mt-3 pt-3 border-t border-slate-700"><p><strong>Em Níveis Superiores:</strong></p>{(item.higher_level).map((p, i) => <p key={i} className="mb-2">{p}</p>)}</div>)}
+                         <p className="text-xs text-slate-500 pt-2">Classes: {(item.classes || []).map(c => c.name).join(', ')}</p>
                     </div>;
             case 'monsters':
-                return <div className="space-y-2 text-sm text-gray-300">
+                return <div className="space-y-2 text-sm text-slate-300">
                     <p>{item.size} {item.type}, {item.alignment}</p>
                     <p><strong>Classe de Armadura:</strong> {item.armor_class?.map(ac => `${ac.value} (${ac.type})`).join(', ') || 'N/A'}</p>
                     <p><strong>Pontos de Vida:</strong> {item.hit_points} ({item.hit_dice})</p>
                     <p><strong>Deslocamento:</strong> {formatDistance(item.speed)}</p>
-                    <div className="grid grid-cols-6 gap-2 text-center my-2 pt-2 border-t border-gray-600">
+                    <div className="grid grid-cols-6 gap-2 text-center my-2 pt-2 border-t border-slate-700">
                          {Object.keys(attributeTranslations).map(attr => (
                              <div key={attr}><p className="font-bold uppercase">{attributeTranslations[attr]}</p><p>{item[attr]} ({(Math.floor((item[attr] - 10) / 2)) >= 0 ? '+' : ''}{Math.floor((item[attr] - 10) / 2)})</p></div>
                         ))}
                     </div>
-                    {item.special_abilities?.length > 0 && <div className="pt-2 border-t border-gray-600"><strong>Habilidades Especiais:</strong> {item.special_abilities.map(a => <div key={a.name} className="mt-1"><p className="font-semibold">{a.name}:</p><p>{a.desc}</p></div>)}</div>}
-                    {item.actions?.length > 0 && <div className="pt-2 border-t border-gray-600"><strong>Ações:</strong> {item.actions.map(a => <div key={a.name} className="mt-1"><p className="font-semibold">{a.name}:</p><p>{a.desc}</p></div>)}</div>}
-                    {item.legendary_actions?.length > 0 && <div className="pt-2 border-t border-gray-600"><strong>Ações Lendárias:</strong> {item.legendary_actions.map(a => <div key={a.name} className="mt-1"><p className="font-semibold">{a.name}:</p><p>{a.desc}</p></div>)}</div>}
+                    {item.special_abilities?.length > 0 && <div className="pt-2 border-t border-slate-700"><strong>Habilidades Especiais:</strong> {item.special_abilities.map(a => <div key={a.name} className="mt-1"><p className="font-semibold">{a.name}:</p><p>{a.desc}</p></div>)}</div>}
+                    {item.actions?.length > 0 && <div className="pt-2 border-t border-slate-700"><strong>Ações:</strong> {item.actions.map(a => <div key={a.name} className="mt-1"><p className="font-semibold">{a.name}:</p><p>{a.desc}</p></div>)}</div>}
+                    {item.legendary_actions?.length > 0 && <div className="pt-2 border-t border-slate-700"><strong>Ações Lendárias:</strong> {item.legendary_actions.map(a => <div key={a.name} className="mt-1"><p className="font-semibold">{a.name}:</p><p>{a.desc}</p></div>)}</div>}
                 </div>;
             case 'classes':
-                 return <div className="space-y-2 text-sm text-gray-300">
+                 return <div className="space-y-2 text-sm text-slate-300">
                     <p><strong>Dado de Vida:</strong> d{item.hit_die}</p>
                     <p><strong>Proficiências:</strong> {item.proficiencies.map(p => p.name).join(', ')}</p>
-                    <div className="pt-2 border-t border-gray-600">
+                    <div className="pt-2 border-t border-slate-700">
                         <h4 className="font-semibold mb-1">Testes de Resistência:</h4>
                         <p>{item.saving_throws.map(s => s.name).join(', ')}</p>
                     </div>
                 </div>;
             case 'races':
-                return <div className="space-y-2 text-sm text-gray-300">
+                return <div className="space-y-2 text-sm text-slate-300">
                     <p><strong>Aumento de Atributo:</strong> {item.ability_bonuses.map(b => `${b.ability_score.name} +${b.bonus}`).join(', ')}</p>
                     <p><strong>Tendência:</strong> {item.alignment}</p>
                     <p><strong>Idade:</strong> {item.age}</p>
                     <p><strong>Tamanho:</strong> {item.size_description}</p>
                     <p><strong>Deslocamento:</strong> {formatDistance(item.speed)}</p>
-                    <div className="pt-2 border-t border-gray-600">
+                    <div className="pt-2 border-t border-slate-700">
                         <h4 className="font-semibold mb-1">Traços Raciais:</h4>
                         {item.traits.map(t => <p key={t.index}>- {t.name}</p>)}
                     </div>
                 </div>;
             case 'equipment':
-                return <div className="space-y-2 text-sm text-gray-300">
+                return <div className="space-y-2 text-sm text-slate-300">
                     {item.desc?.map((p, i) => <p key={i}>{p}</p>)}
                     <p><strong>Custo:</strong> {item.cost.quantity} {item.cost.unit}</p>
                     <p><strong>Peso:</strong> {item.weight} lb.</p>
@@ -1316,7 +1324,7 @@ const DndResourcesView = ({ showNotification }) => {
                     {item.properties?.length > 0 && <p><strong>Propriedades:</strong> {item.properties.map(p => p.name).join(', ')}</p>}
                 </div>;
             case 'tavern':
-                 return <div className="space-y-2 text-sm text-gray-300">
+                 return <div className="space-y-2 text-sm text-slate-300">
                     <p><strong>Preço:</strong> {item.price}</p>
                     <p className="mt-2">{item.desc}</p>
                  </div>;
@@ -1334,13 +1342,13 @@ const DndResourcesView = ({ showNotification }) => {
     };
 
     return (
-        <div className="p-4 md:p-6 bg-gray-800/50 rounded-lg">
-            <h2 className="text-3xl font-semibold text-teal-400 mb-4">Recursos de D&D 5e (SRD)</h2>
-            <p className="text-sm text-gray-400 mb-6">Consulte informações do Documento de Referência do Sistema 5e. Requer conexão com a internet. Os dados são traduzidos experimentalmente por IA.</p>
+        <div className="p-4 md:p-6 bg-slate-800/50 rounded-lg border border-slate-700">
+            <h2 className="text-3xl font-bold text-cyan-400 font-orbitron mb-4">Recursos de D&D 5e (SRD)</h2>
+            <p className="text-sm text-slate-400 mb-6">Consulte informações do Documento de Referência do Sistema 5e. Requer conexão com a internet. Os dados são traduzidos experimentalmente por IA.</p>
             
-            <div className="flex border-b border-gray-700 mb-4 overflow-x-auto">
+            <div className="flex border-b border-slate-700 mb-4 overflow-x-auto">
                 {Object.entries(TABS_CONFIG).map(([key, { name }]) => (
-                    <button key={key} onClick={() => { setActiveTab(key); setSearchTerm(''); }} className={`py-2 px-4 text-sm font-medium -mb-px border-b-2 whitespace-nowrap ${activeTab === key ? 'border-teal-500 text-teal-400' : 'border-transparent text-gray-400 hover:text-gray-200'}`}>
+                    <button key={key} onClick={() => { setActiveTab(key); setSearchTerm(''); }} className={`py-2 px-4 text-sm font-medium -mb-px border-b-2 whitespace-nowrap ${activeTab === key ? 'border-cyan-500 text-cyan-400' : 'border-transparent text-slate-400 hover:text-slate-200'}`}>
                         {name}
                     </button>
                 ))}
@@ -1352,25 +1360,25 @@ const DndResourcesView = ({ showNotification }) => {
                     placeholder={`Pesquisar em ${TABS_CONFIG[activeTab].name}...`}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full p-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-teal-500 focus:border-teal-500"
+                    className="w-full p-3 bg-slate-700 rounded-md border border-slate-600 focus:ring-cyan-500 focus:border-cyan-500"
                 />
             </div>
             
-            {(isLoadingList || isLoadingDetails) && <p className="text-teal-400 animate-pulse">{isLoadingList ? `Carregando e traduzindo lista de ${TABS_CONFIG[activeTab].name}...` : `Carregando e traduzindo detalhes...`}</p>}
+            {(isLoadingList || isLoadingDetails) && <p className="text-cyan-400 animate-pulse">{isLoadingList ? `Carregando e traduzindo lista de ${TABS_CONFIG[activeTab].name}...` : `Carregando e traduzindo detalhes...`}</p>}
             
             <div className="max-h-96 overflow-y-auto pr-2">
                  {activeTab === 'tavern' ? (
                     <>
-                        <h3 className="text-xl font-semibold text-purple-300 mt-4 mb-2">Comidas</h3>
+                        <h3 className="text-xl font-semibold text-cyan-300 font-orbitron mt-4 mb-2">Comidas</h3>
                         {tavernItems.foods.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())).map(item => (
-                            <button key={item.name} onClick={() => handleSelectItem(null, true, { ...item, type: 'tavern' })} className="block w-full text-left p-2 rounded hover:bg-gray-700 transition-colors">
-                                {item.name} <span className="text-xs text-gray-400">- {item.price}</span>
+                            <button key={item.name} onClick={() => handleSelectItem(null, true, { ...item, type: 'tavern' })} className="block w-full text-left p-2 rounded hover:bg-slate-700 transition-colors">
+                                {item.name} <span className="text-xs text-slate-400">- {item.price}</span>
                             </button>
                         ))}
-                         <h3 className="text-xl font-semibold text-purple-300 mt-4 mb-2">Bebidas</h3>
+                         <h3 className="text-xl font-semibold text-cyan-300 font-orbitron mt-4 mb-2">Bebidas</h3>
                         {tavernItems.drinks.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())).map(item => (
-                             <button key={item.name} onClick={() => handleSelectItem(null, true, { ...item, type: 'tavern' })} className="block w-full text-left p-2 rounded hover:bg-gray-700 transition-colors">
-                                {item.name} <span className="text-xs text-gray-400">- {item.price}</span>
+                             <button key={item.name} onClick={() => handleSelectItem(null, true, { ...item, type: 'tavern' })} className="block w-full text-left p-2 rounded hover:bg-slate-700 transition-colors">
+                                {item.name} <span className="text-xs text-slate-400">- {item.price}</span>
                             </button>
                         ))}
                     </>
@@ -1380,7 +1388,7 @@ const DndResourcesView = ({ showNotification }) => {
                             key={item.index}
                             onClick={() => handleSelectItem(item.url)}
                             disabled={isLoadingDetails}
-                            className="block w-full text-left p-2 rounded hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="block w-full text-left p-2 rounded hover:bg-slate-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {item.name_pt || item.name}
                         </button>

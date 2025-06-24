@@ -35,9 +35,9 @@
     "productName": "StarForge RPG Manager",
     "files": [
       "build/**/*",
-      "public/**/*"
+      "public/electron.js",
+      "public/preload.js"
     ],
-    "asar": false,
     "win": {
       "target": "nsis"
     },
