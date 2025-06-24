@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 // --- Funções da API Gemini ---
 const callGeminiAPI = async (prompt, showNotification) => {
     // A Chave de API é usada tanto para Gemini (texto) quanto para Imagen (imagens).
-    const apiKey = "AIzaSyDx1JD-qRgIjnB1ZXSdaNqWHSTKI6O0rp8"; 
+    const apiKey = "SUA_CHAVE_DA_API_AQUI"; 
 
     if (apiKey === "SUA_CHAVE_DA_API_AQUI" || !apiKey) {
         showNotification("Erro: Chave da API não configurada no código.", "error");
